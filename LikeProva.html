@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Like Prova Plus</title>
+  </head>
+  <body>
+    <h2>SARI EDACOS</h2>
+    <div id="div_parte1">
+      <h3>Parâmetros</h3>
+      <span
+        ><i><u>Intervalo de Salário</u></i></span
+      ><br /><br />
+      <span>Salário inicial:</span>
+      <input
+        type="number"
+        placeholder="Insira um valor..."
+        id="ipt_salarioInicial"
+      /><br />
+      <span>Salário final:</span>
+      <input
+        type="number"
+        placeholder="Insira um valor..."
+        id="ipt_salarioFinal"
+      /><br />
+      <span>Mês corrente:</span>
+      <select id="slc_mes">
+        <option value="#" selected disabled>Selecione um mês</option>
+        <option value="1">Janeiro</option>
+        <option value="2">Fevereiro</option>
+        <option value="3">Março</option>
+        <option value="4">Abril</option>
+        <option value="5">Maio</option>
+        <option value="6">Junho</option>
+        <option value="7">Julho</option>
+        <option value="8">Agosto</option>
+        <option value="9">Setembro</option>
+        <option value="10">Outubro</option>
+        <option value="11">Novembro</option>
+        <option value="12">Dezembro</option></select
+      ><br /><br />
+
+      <button onclick="registrar()">Registrar Parâmetros</button><br /><br />
+      <div id="div_alerta1"></div>
+    </div>
+
+    <div style="display: none" id="div_parte2">
+      <h3>Salário e Compra</h3>
+      <span>Nome do funcionário:</span>
+      <input type="text" placeholder="Insira um nome..." id="ipt_nome" /><br />
+      <span>Valor do salário:</span>
+      <input
+        type="number"
+        placeholder="Insira um valor..."
+        id="ipt_salario"
+      /><br /><br />
+
+      <span
+        ><i><u>Quantidade de Compra de Cadeiras:</u></i></span
+      ><br /><br />
+      <span>Cadeira de Praia:</span>
+      <input
+        type="number"
+        placeholder="Insira uma quantidade..."
+        id="ipt_praia"
+      /><br />
+      <span>Cadeira de Jardim:</span>
+      <input
+        type="number"
+        placeholder="Insira uma quantidade..."
+        id="ipt_jardim"
+      /><br />
+      <span>Cadeira de Pesca:</span>
+      <input
+        type="number"
+        placeholder="Insira uma quantidade..."
+        id="ipt_pesca"
+      /><br /><br />
+
+      <button onclick="pagar()">Pagar Salário</button>
+      <button onclick="encerrar()" id="btn_encerrar" style="display: none">
+        Encerrar o Dia
+      </button>
+      <div id="div_alerta2"></div>
+      <div id="div_extrato"></div>
+    </div>
+
+    <div id="div_parte3"></div>
+    <br />
+    <button onclick="voltar4()" style="display: none" id="btn_voltar">
+      Voltar
+    </button>
+
+    <script>
+      var salarioInicial = 0,
+        salarioFinal = 0,
+        mes;
+      var totalCadeira = 0,
+        totalVenda = 0;
+      var qtdTotalPraia = 0,
+        qtdTotalJardim = 0,
+        qtdTotalPesca = 0;
+      var valorTotalPraia = 0,
+        valorTotalJardim = 0,
+        valorTotalPesca = 0;
+      var percentualCadeiraPraia = 0,
+        percentualVendaPraia = 0;
+      var percentualCadeiraJardim = 0,
+        percentualVendaJardim = 0;
+      var percentualCadeiraPesca = 0,
+        percentualVendaPesca = 0;
+
+      function limparCamposCompra() {
+        ipt_praia.value = "";
+        ipt_jardim.value = "";
+        ipt_pesca.value = "";
+      }
+
+      function limparCamposSalario() {
+        ipt_salarioInicial.value = "";
+        ipt_salarioFinal.value = "";
+        ipt_nome.value = "";
+        ipt_salario.value = "";
+        limparCamposCompra();
+      }
+
+      function voltar1() {
+        div_alerta2.innerHTML = "";
+        div_parte1.style.display = "block";
+        div_parte2.style.display = "none";
+        btn_encerrar.style.display = "none";
+        limparCamposSalario();
+      }
+
+      function voltar2() {
+        div_alerta2.innerHTML = "";
+        btn_encerrar.style.display = "none";
+        limparCamposCompra();
+      }
+
+      function voltar3() {
+        div_alerta2.innerHTML = "";
+        div_parte2.style.display = "none";
+        limparCamposCompra();
+      }
+
+      function voltar4() {
+        totalCadeira = totalVenda = 0;
+        qtdTotalPraia = qtdTotalJardim = qtdTotalPesca = 0;
+        valorTotalPraia = valorTotalJardim = valorTotalPesca = 0;
+        percentualCadeiraPraia = percentualVendaPraia = 0;
+        percentualCadeiraJardim = percentualVendaJardim = 0;
+        percentualCadeiraPesca = percentualVendaPesca = 0;
+
+        div_parte1.style.display = "block";
+        btn_voltar.style.display = "none";
+        btn_encerrar.style.display = "none";
+        div_parte3.innerHTML = "";
+        div_extrato.innerHTML = "";
+        limparCamposSalario();
+      }
+
+      function registrar() {
+        div_alerta1.innerHTML = "";
+        salarioInicial = Number(ipt_salarioInicial.value);
+        salarioFinal = Number(ipt_salarioFinal.value);
+        mes = Number(slc_mes.value);
+
+        if (
+          salarioInicial > 3000 &&
+          salarioFinal < salarioInicial * 4 &&
+          salarioFinal >= salarioInicial &&
+          !isNaN(mes)
+        ) {
+          div_parte1.style.display = "none";
+          div_parte2.style.display = "block";
+        } else {
+          if (salarioInicial <= 3000)
+            div_alerta1.innerHTML +=
+              "O salário inicial deve ser maior que R$3000.<br>";
+          if (salarioFinal >= salarioInicial * 4)
+            div_alerta1.innerHTML +=
+              "O salário final deve ser menor que 4 vezes o salário inicial.<br>";
+          if (salarioFinal < salarioInicial)
+            div_alerta1.innerHTML +=
+              "O salário final deve ser maior ou igual ao inicial.<br>";
+          if (isNaN(mes)) div_alerta1.innerHTML += "Selecione um mês.<br>";
+          ipt_salarioInicial.value = "";
+          ipt_salarioFinal.value = "";
+        }
+      }
+
+      function pagar() {
+        div_extrato.innerHTML = "";
+        div_alerta2.innerHTML = "";
+
+        var nome = ipt_nome.value.trim();
+        var salario = Number(ipt_salario.value);
+        var qtdPraia = Number(ipt_praia.value);
+        var qtdJardim = Number(ipt_jardim.value);
+        var qtdPesca = Number(ipt_pesca.value);
+
+        var valorPraia = qtdPraia * 100;
+        var valorJardim = qtdJardim * 120;
+        var valorPesca = qtdPesca * 80;
+
+        var jardimBruto = valorJardim,
+          pescaBruto = valorPesca;
+
+        if ((mes >= 1 && mes <= 5) || (mes >= 10 && mes <= 12))
+          valorJardim *= 0.928;
+        if (mes >= 4 && mes <= 10 && qtdPesca > 3) valorPesca *= 0.9391;
+
+        var jardimDesconto = jardimBruto - valorJardim;
+        var pescaDesconto = pescaBruto - valorPesca;
+        var valorTotal = valorPraia + valorJardim + valorPesca;
+
+        if (valorTotal > 400 && qtdPraia == 0 && qtdPesca >= 1)
+          valorTotal *= 0.975;
+        if (valorJardim > valorPesca && valorJardim > valorPraia)
+          valorTotal *= 0.945;
+
+        if (
+          nome &&
+          salario >= salarioInicial &&
+          qtdPraia >= 0 &&
+          qtdJardim >= 0 &&
+          qtdPesca >= 0
+        ) {
+          var salarioLiquido = salario - valorTotal;
+
+          var valor = Math.floor(salarioLiquido);
+          var listaCedulas = [200, 50, 20, 10, 5, 1];
+          var mensagem = "";
+
+          for (var i = 0; i < listaCedulas.length; i++) {
+            var cedulas = Math.floor(valor / listaCedulas[i]);
+            if (cedulas > 0) {
+              mensagem +=
+                "Cédulas de " + listaCedulas[i] + ": " + cedulas + "<br>";
+              valor %= listaCedulas[i];
+            }
+          }
+
+          qtdTotalPraia += qtdPraia;
+          qtdTotalJardim += qtdJardim;
+          qtdTotalPesca += qtdPesca;
+          valorTotalPraia += valorPraia;
+          valorTotalJardim += valorJardim;
+          valorTotalPesca += valorPesca;
+          totalCadeira = qtdTotalPraia + qtdTotalJardim + qtdTotalPesca;
+          totalVenda = valorTotalPraia + valorTotalJardim + valorTotalPesca;
+
+          percentualCadeiraPraia = (qtdTotalPraia / totalCadeira) * 100;
+          percentualVendaPraia = (valorTotalPraia / totalVenda) * 100;
+          percentualCadeiraJardim = (qtdTotalJardim / totalCadeira) * 100;
+          percentualVendaJardim = (valorTotalJardim / totalVenda) * 100;
+          percentualCadeiraPesca = (qtdTotalPesca / totalCadeira) * 100;
+          percentualVendaPesca = (valorTotalPesca / totalVenda) * 100;
+
+          if (
+            (salario >= salarioInicial &&
+              salario <= salarioFinal &&
+              valorTotal > salario * 0.305) ||
+            (salario > salarioFinal && valorTotal > salario * 0.2075)
+          ) {
+            var mensagemErro =
+              salario >= salarioInicial && salario <= salarioFinal
+                ? "30,5%"
+                : "20,75%";
+
+            div_alerta2.innerHTML = `<br>Critério de venda não cumprido: valor total ultrapassa ${mensagemErro} do seu salário.
+                <br><br>Deseja inserir um novo intervalo ou realizar uma nova compra?<br><br>
+                <button onclick='voltar1()'>Novo Intervalo de Salário</button>
+                <button onclick='voltar2()'>Nova Compra</button>`;
+          } else {
+            btn_encerrar.style.display = "block";
+            div_extrato.innerHTML = `<h3>Extrato</h3>
+                    Nome: ${nome}<br>
+                    Salário: ${salario.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}<br>
+                    Salário Líquido: ${salarioLiquido.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}<br><br>
+                    <b>Cadeira de Praia:</b><br>
+                    - Quantidade: ${qtdPraia}<br>
+                    - Valor Inicial: ${valorPraia.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}<br>
+                    - Desconto: R$ 0,00<br><br>
+                    <b>Cadeira de Jardim:</b><br>
+                    - Quantidade: ${qtdJardim}<br>
+                    - Valor Inicial: ${jardimBruto.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}<br>
+                    - Desconto: ${jardimDesconto.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}<br><br>
+                    <b>Cadeira de Pesca:</b><br>
+                    - Quantidade: ${qtdPesca}<br>
+                    - Valor Inicial: ${pescaBruto.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}<br>
+                    - Desconto: ${pescaDesconto.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}<br><br>
+                    <b>Cédulas</b><br>${mensagem}`;
+          }
+        } else {
+          if (!nome)
+            div_alerta2.innerHTML += "<br>Nome tem que estar preenchido.<br>";
+          if (salario < salarioInicial) {
+            div_alerta2.innerHTML +=
+              "<br>Salário tem que ser maior ou igual ao Salário Inicial.<br>";
+            ipt_salario.value = "";
+          }
+          if (qtdPraia < 0 || qtdJardim < 0 || qtdPesca < 0) {
+            div_alerta2.innerHTML +=
+              "<br>As quantidades não podem ser negativas.<br>";
+            if (qtdPraia < 0) ipt_praia.value = "";
+            if (qtdJardim < 0) ipt_jardim.value = "";
+            if (qtdPesca < 0) ipt_pesca.value = "";
+          }
+        }
+      }
+
+      function encerrar() {
+        voltar3();
+        btn_voltar.style.display = "block";
+        div_parte3.innerHTML = `
+            <h3>Cadeira de Praia:</h3>
+            Quantidade Total Vendida: ${qtdTotalPraia}<br>
+            Valor Total: ${valorTotalPraia.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}<br>
+            % Proporção por Valor: ${percentualVendaPraia.toFixed(2)}%<br>
+            % Proporção por Quantidade: ${percentualCadeiraPraia.toFixed(
+              2
+            )}%<br><br>
+
+            <h3>Cadeira de Jardim:</h3>
+            Quantidade Total Vendida: ${qtdTotalJardim}<br>
+            Valor Total: ${valorTotalJardim.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}<br>
+            % Proporção por Valor: ${percentualVendaJardim.toFixed(2)}%<br>
+            % Proporção por Quantidade: ${percentualCadeiraJardim.toFixed(
+              2
+            )}%<br><br>
+
+            <h3>Cadeira de Pesca:</h3>
+            Quantidade Total Vendida: ${qtdTotalPesca}<br>
+            Valor Total: ${valorTotalPesca.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}<br>
+            % Proporção por Valor: ${percentualVendaPesca.toFixed(2)}%<br>
+            % Proporção por Quantidade: ${percentualCadeiraPesca.toFixed(2)}%
+        `;
+      }
+    </script>
+  </body>
+</html>

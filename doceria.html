@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Doceria do Dori </title>
+</head>
+<body style="font-family: Arial;">
+    <h2>Doceria do Dori</h2>
+
+    <div id="div_parte1">
+        <h3>Quantidade de Doces</h3>
+        <span>Macarons:</span> <input type="number" id="qtdMacaron" min="0"><br>
+        <span>Brigadeiros:</span> <input type="number" id="qtdBrigadeiro" min="0"><br>
+        <span>Cupcakes:</span> <input type="number" id="qtdCupcake" min="0"><br>
+        <span>Cheesecakes:</span> <input type="number" id="qtdCheesecake" min="0"><br><br>
+
+        <h3>Preço Unitário (R$)</h3>
+        <span>Macaron:</span> <input type="number" id="precoMacaron" step="0.01" min="0"><br>
+        <span>Brigadeiro:</span> <input type="number" id="precoBrigadeiro" step="0.01" min="0"><br>
+        <span>Cupcake:</span> <input type="number" id="precoCupcake" step="0.01" min="0"><br>
+        <span>Cheesecake:</span> <input type="number" id="precoCheesecake" step="0.01" min="0"><br><br>
+
+        <button onclick="verificarVendas()">Verificar Vendas</button>
+        <div id="div_alerta"></div>
+    </div>
+
+
+    <div id="div_resultado"></div>
+
+<script>
+    
+    var numeroVenda = 1;
+    var total = 0;
+
+    
+    function verificarVendas() {
+       
+        div_resultado.innerHTML = "";
+        div_alerta.innerHTML = "";
+        numeroVenda = 1;
+        total = 0;
+
+        
+        var qtdMacaronVal = Number(qtdMacaron.value);
+        var qtdBrigadeiroVal = Number(qtdBrigadeiro.value);
+        var qtdCupcakeVal = Number(qtdCupcake.value);
+        var qtdCheesecakeVal = Number(qtdCheesecake.value);
+
+       
+        var precoMacaronVal = Number(precoMacaron.value);
+        var precoBrigadeiroVal = Number(precoBrigadeiro.value);
+        var precoCupcakeVal = Number(precoCupcake.value);
+        var precoCheesecakeVal = Number(precoCheesecake.value);
+
+        
+        if (qtdMacaronVal < 0 || qtdBrigadeiroVal < 0 || qtdCupcakeVal < 0 || qtdCheesecakeVal < 0 ||
+            precoMacaronVal < 0 || precoBrigadeiroVal < 0 || precoCupcakeVal < 0 || precoCheesecakeVal < 0) {
+
+            div_alerta.innerHTML = "<br><b style='color:red;'>❌ Valores negativos não são permitidos.</b>";
+            return;
+        }
+
+       
+        listarDoce("Macaron", qtdMacaronVal, precoMacaronVal, "https://www.shutterstock.com/image-photo/pink-macarons-on-white-background-260nw-2485272865.jpg");
+        listarDoce("Brigadeiro", qtdBrigadeiroVal, precoBrigadeiroVal, "https://www.shutterstock.com/image-illustration/brigadeiro-traditional-brazilian-dessert-ball-600nw-2455939345.jpg");
+        listarDoce("Cupcake", qtdCupcakeVal, precoCupcakeVal, "https://www.shutterstock.com/image-photo/cupcake-isolation-on-transparent-background-600nw-2625678449.jpg");
+        listarDoce("Cheesecake", qtdCheesecakeVal, precoCheesecakeVal," https://www.shutterstock.com/image-photo/plain-cheesecake-slice-on-white-600nw-2498748989.jpg ");
+
+        
+        var msgFinal = `
+        <br>Com a quantidade de ${qtdMacaronVal} Macarons, ${qtdBrigadeiroVal} Brigadeiros, 
+        ${qtdCupcakeVal} Cupcakes e ${qtdCheesecakeVal} Cheesecakes, 
+        a venda totalizará <b>R$${total.toFixed(2)}</b>`;
+        div_resultado.innerHTML += msgFinal;
+    }
+
+   
+    function listarDoce(nome, qtd, preco, imagemURL) {
+        for (var i = 0; i < qtd; i++) {
+            var linha = document.createElement("div");
+            var vendaTexto = document.createElement("span");
+            vendaTexto.innerHTML = "Venda " + numeroVenda + " - ";
+
+            var img = document.createElement("img");
+            img.src = imagemURL;
+            img.alt = nome;
+            img.width = 80;
+
+            var precoTexto = document.createElement("span");
+            precoTexto.innerHTML = " R$" + preco.toFixed(2);
+
+            linha.appendChild(vendaTexto);
+            linha.appendChild(img);
+            linha.appendChild(precoTexto);
+
+            div_resultado.appendChild(linha);
+
+            numeroVenda++;
+            total += preco;
+        }
+    }
+</script>
+</body>
+</html>
